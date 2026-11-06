@@ -1,0 +1,10 @@
+# 依赖库（node_modules 严禁入库，云端会自动装）
+node_modules/
+
+# 编译缓存与产物
+docs/.vitepress/cache/
+docs/.vitepress/dist/
+
+# 系统冗余文件
+.DS_Store
+Thumbs.db
