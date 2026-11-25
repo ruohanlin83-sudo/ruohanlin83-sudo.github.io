@@ -8,3 +8,5 @@ docs/.vitepress/dist/
 # 系统冗余文件
 .DS_Store
 Thumbs.db
+.env
+.venv

@@ -1,0 +1,114 @@
+/* 1. 注入全屏固定壁纸与遮罩层 */
+body {
+  background:
+    /* 渐变遮罩：防止背景图太花导致文字看不清（保证文本对比度） */
+    linear-gradient(to bottom, rgb(41 42 15 / 0.75), rgb(15 13 17 / 0.74)),
+    /* 你的动漫背景图 */
+    url('/bg-anime.png') no-repeat center center fixed !important;
+  background-size: cover !important;
+}
+
+/* 2. 将默认的白色/纯黑背景全部清空，让壁纸透出来 */
+:root {
+  --vp-c-bg: transparent !important;
+  --vp-c-bg-alt: transparent !important;
+  --vp-c-bg-elv: rgba(30, 41, 59, 0.7) !important;
+
+  /* 动漫高光色调（如樱花粉配合极光紫，或二次元电光蓝） */
+  --vp-c-brand-1: #f43f5e;
+  --vp-c-brand-2: #fb7185;
+  --vp-c-brand-3: #fda4af;
+}
+
+/* 3. 顶部导航栏毛玻璃化 */
+.VPNav {
+  background-color: rgba(15, 23, 42, 0.65) !important;
+  backdrop-filter: blur(16px) !important;
+  border-bottom: 1px solid rgba(244, 63, 94, 0.2) !important;
+}
+
+/* 4. 首页功能卡片：毛玻璃 + 发光边框 + 浮起悬停 */
+.VPFeature {
+  background: rgba(30, 41, 59, 0.5) !important;
+  backdrop-filter: blur(12px) !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2) !important;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1) !important;
+}
+
+.VPFeature:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: var(--vp-c-brand-1) !important;
+  box-shadow: 0 10px 25px rgba(244, 63, 94, 0.25) !important;
+}
+
+/* 5. 侧边栏与正文内容容器半透明 */
+.VPSidebar, .VPDoc {
+  background-color: rgba(15, 23, 42, 0.7) !important;
+  backdrop-filter: blur(10px);
+}
+
+/* === 动漫/主题聚合页专用网格布局 === */
+.anime-hub-grid {
+  display: grid;
+  grid-template-columns: 1fr 2fr 1fr; /* 水平比例 1 : 2 : 1 */
+  gap: 20px;
+  max-width: 1360px;
+  margin: 24px auto;
+  padding: 0 20px;
+  align-items: stretch;
+}
+
+/* 右侧列：垂直等分三块 */
+.anime-right-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.anime-right-stack > .hub-card {
+  flex: 1; /* 平分右侧列的垂直高度 */
+}
+
+/* 统一的半透明毛玻璃卡片外观 */
+.hub-card {
+  background: rgba(30, 41, 59, 0.65);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  border-radius: 12px;
+  padding: 20px;
+  transition: transform 0.2s ease, border-color 0.2s ease;
+}
+
+.hub-card:hover {
+  border-color: #38bdf8;
+  transform: translateY(-2px);
+}
+
+/* 响应式兜底：屏幕变窄时自动变成单列 */
+@media (max-width: 960px) {
+  .anime-hub-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* === 桌面端侧边栏一键收起控制规则 === */
+@media (min-width: 960px) {
+  /* 添加平滑过渡动画 */
+  .VPSidebar,
+  .VPContent.has-sidebar {
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+                padding-left 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+
+  /* 当触发收起状态时：侧边栏向左移出视野 */
+  html.sidebar-collapsed .VPSidebar {
+    transform: translateX(-100%);
+  }
+
+  /* 当触发收起状态时：主内容区取消左侧占位，居中铺开 */
+  html.sidebar-collapsed .VPContent.has-sidebar {
+    padding-left: 0 !important;
+  }
+}
